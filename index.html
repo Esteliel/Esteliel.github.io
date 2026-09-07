@@ -1,5 +1,36 @@
 ---
 title: Esteliel
 ---
-<h1>Esteliel</h1>
-<p>欢迎来到我的网站。</p>
+<header class="home-intro">
+  <p class="eyebrow">ESTELIEL / PERSONAL SPACE</p>
+  <h1>留一点空间，<br>记录喜欢的事。</h1>
+  <p class="intro-copy">文字、灵感、照片，还有生活里的小发现。欢迎随处看看。</p>
+</header>
+
+<nav class="portal-grid" aria-label="探索网站">
+  <a class="portal-card" href="{{ '/blog/' | relative_url }}" target="_blank" rel="noopener noreferrer" aria-label="博客（在新标签页打开）">
+    <span class="portal-meta"><span>01 / BLOG</span><span aria-hidden="true">↗</span></span>
+    <h2>博客</h2>
+    <p>把想法写下来，让日常有迹可循。</p>
+    <span class="portal-action">读些文字 <span aria-hidden="true">→</span></span>
+  </a>
+  <a class="portal-card" href="{{ '/tools/' | relative_url }}" target="_blank" rel="noopener noreferrer" aria-label="工具（在新标签页打开）">
+    <span class="portal-meta"><span>02 / TOOLS</span><span aria-hidden="true">↗</span></span>
+    <h2>工具</h2>
+    <p>收集实用的小工具，也放一些自己的尝试。</p>
+    <span class="portal-action">发现工具 <span aria-hidden="true">→</span></span>
+  </a>
+  <a class="portal-card" href="{{ '/gallery/' | relative_url }}" target="_blank" rel="noopener noreferrer" aria-label="相册（在新标签页打开）">
+    <span class="portal-meta"><span>03 / GALLERY</span><span aria-hidden="true">↗</span></span>
+    <h2>相册</h2>
+    <p>留住光影，把值得记住的瞬间放在这里。</p>
+    <span class="portal-action">看看照片 <span aria-hidden="true">→</span></span>
+  </a>
+  <a class="portal-card" href="{{ '/about/' | relative_url }}" target="_blank" rel="noopener noreferrer" aria-label="关于（在新标签页打开）">
+    <span class="portal-meta"><span>04 / ABOUT</span><span aria-hidden="true">↗</span></span>
+    <h2>关于</h2>
+    <p>关于 Esteliel，以及这个小小的个人空间。</p>
+    <span class="portal-action">认识一下 <span aria-hidden="true">→</span></span>
+  </a>
+</nav>
+<p class="portal-hint">所有入口均在新标签页打开 <span aria-hidden="true">↗</span></p>
