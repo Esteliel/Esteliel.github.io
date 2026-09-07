@@ -1,0 +1,12 @@
+title: Esteliel
+url: "https://esteliel.github.io"
+baseurl: ""
+defaults:
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: default
+exclude:
+  - README.md
+  - LICENSE
