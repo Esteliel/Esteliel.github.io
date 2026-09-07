@@ -9,7 +9,7 @@
   <script defer src="{{ '/assets/js/fish.js' | relative_url }}"></script>
 </head>
 <body>
-  <main class="site-content">
+  <main class="site-content{% if page.home %} site-content--home{% endif %}">
     {{ content }}
   </main>
   <div id="jsi-flying-fish-container" class="fish-container" aria-hidden="true"></div>
