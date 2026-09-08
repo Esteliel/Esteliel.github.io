@@ -1,0 +1,94 @@
+---
+title: 提示词管理 · Esteliel
+stylesheet: /assets/css/prompts.css
+script: /assets/js/prompts.js
+---
+<div class="prompt-manager">
+  <a class="back-link" href="{{ '/tools/' | relative_url }}">← 返回工具</a>
+
+  <header class="section-intro prompt-hero">
+    <p class="eyebrow">01 / PROMPTS</p>
+    <h1>提示词管理</h1>
+    <p class="intro-copy">把灵感和工作流收进一个安静、好找的地方。</p>
+    <p class="prompt-storage-note">数据保存在当前浏览器，可用导出 JSON 备份或迁移。</p>
+  </header>
+
+  <section class="prompt-toolbar" aria-label="提示词筛选与操作">
+    <div class="prompt-toolbar__field prompt-toolbar__field--search">
+      <label for="prompt-search">搜索提示词</label>
+      <input id="prompt-search" type="search" placeholder="搜索标题、内容或标签" autocomplete="off">
+    </div>
+    <div class="prompt-toolbar__field">
+      <label for="prompt-category">分类</label>
+      <select id="prompt-category">
+        <option value="">全部分类</option>
+      </select>
+    </div>
+    <button class="button button--primary" type="button" data-action="new">＋ 新建提示词</button>
+  </section>
+
+  <div class="prompt-meta">
+    <p id="prompt-summary" class="prompt-summary" aria-live="polite"></p>
+    <div class="prompt-meta__actions">
+      <button class="button button--quiet" type="button" data-action="export">导出 JSON</button>
+      <button class="button button--quiet" type="button" data-action="import">导入 JSON</button>
+      <input id="prompt-import" type="file" accept="application/json,.json" hidden>
+    </div>
+  </div>
+
+  <section id="prompt-list" class="prompt-grid" aria-label="提示词列表"></section>
+
+  <noscript>
+    <section class="empty-state prompt-empty">
+      <h2>需要启用 JavaScript</h2>
+      <p>提示词管理依赖浏览器脚本来保存和筛选内容。</p>
+    </section>
+  </noscript>
+
+  <section id="prompt-empty" class="empty-state prompt-empty" aria-labelledby="prompt-empty-title" hidden>
+    <h2 id="prompt-empty-title">还没有匹配的提示词</h2>
+    <p id="prompt-empty-copy">新建一条提示词，或者换个关键词试试。</p>
+    <button class="button button--quiet" type="button" data-action="clear-filters">清除筛选</button>
+  </section>
+</div>
+
+<dialog id="prompt-dialog" class="prompt-dialog" aria-labelledby="prompt-dialog-title">
+  <form id="prompt-form" class="prompt-form">
+    <div class="prompt-dialog__header">
+      <div>
+        <p class="eyebrow">PROMPT NOTE</p>
+        <h2 id="prompt-dialog-title">新建提示词</h2>
+      </div>
+      <button class="dialog-close" type="button" data-action="cancel" aria-label="关闭">×</button>
+    </div>
+
+    <input id="prompt-id" type="hidden">
+    <div class="prompt-form__grid">
+      <div class="prompt-form__field prompt-form__field--wide">
+        <label for="prompt-title">标题 <span aria-hidden="true">*</span></label>
+        <input id="prompt-title" name="title" type="text" maxlength="80" required placeholder="例如：文章润色助手">
+      </div>
+      <div class="prompt-form__field">
+        <label for="prompt-form-category">分类</label>
+        <input id="prompt-form-category" name="category" type="text" maxlength="30" placeholder="例如：写作">
+      </div>
+      <div class="prompt-form__field">
+        <label for="prompt-tags">标签</label>
+        <input id="prompt-tags" name="tags" type="text" maxlength="120" placeholder="用逗号分隔">
+      </div>
+      <div class="prompt-form__field prompt-form__field--wide">
+        <label for="prompt-description">简介</label>
+        <input id="prompt-description" name="description" type="text" maxlength="160" placeholder="一句话说明它适合什么时候用">
+      </div>
+      <div class="prompt-form__field prompt-form__field--wide">
+        <label for="prompt-content">提示词内容 <span aria-hidden="true">*</span></label>
+        <textarea id="prompt-content" name="content" rows="10" required placeholder="写下你的提示词……"></textarea>
+      </div>
+    </div>
+    <p id="prompt-form-error" class="form-error" role="alert" hidden></p>
+    <div class="prompt-form__footer">
+      <button class="button button--quiet" type="button" data-action="cancel">取消</button>
+      <button class="button button--primary" type="submit">保存提示词</button>
+    </div>
+  </form>
+</dialog>
