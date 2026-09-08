@@ -2,6 +2,7 @@
   'use strict';
 
   var STORAGE_KEY = 'esteliel.prompt-manager.v1';
+  var LOCAL_OWNER_KEY = STORAGE_KEY + '.owner';
   var seedPrompts = [
     {
       id: 'writing-polish',
@@ -54,6 +55,7 @@
   var state = {
     prompts: localState.prompts,
     localPersisted: localState.persisted,
+    localOwner: localState.owner,
     query: '',
     category: '',
     client: null,
@@ -67,19 +69,23 @@
       if (saved !== null) {
         var parsed = JSON.parse(saved);
         if (Array.isArray(parsed)) {
-          return { prompts: parsed.map(normalizePrompt).filter(Boolean), persisted: true };
+          return { prompts: parsed.map(normalizePrompt).filter(Boolean), persisted: true, owner: window.localStorage.getItem(LOCAL_OWNER_KEY) || '' };
         }
       }
     } catch (error) {
       // Private browsing and disabled storage should not make the page unusable.
     }
-    return { prompts: seedPrompts.map(normalizePrompt), persisted: false };
+    return { prompts: seedPrompts.map(normalizePrompt), persisted: false, owner: '' };
   }
 
   function savePrompts() {
     state.localPersisted = true;
     try {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state.prompts));
+      if (state.user) {
+        state.localOwner = state.user.id;
+        window.localStorage.setItem(LOCAL_OWNER_KEY, state.user.id);
+      }
     } catch (error) {
       // Keep the in-memory list available if storage is unavailable.
     }
@@ -405,6 +411,10 @@
     state.syncing = true;
     updateSignedInStatus('正在从云端读取提示词……', 'syncing');
     try {
+      if (state.localOwner && state.localOwner !== state.user.id) {
+        state.prompts = seedPrompts.map(normalizePrompt);
+        state.localPersisted = false;
+      }
       var remotePrompts = (await getRemoteRows()).map(fromRemoteRow).filter(Boolean);
       var localPrompts = state.localPersisted ? state.prompts : [];
       if (!remotePrompts.length) {
@@ -587,6 +597,7 @@
     var next = readLocalPrompts();
     state.prompts = next.prompts;
     state.localPersisted = next.persisted;
+    state.localOwner = next.owner;
     render();
   });
 
