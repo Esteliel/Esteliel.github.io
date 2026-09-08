@@ -41,26 +41,43 @@
   var dialog = document.getElementById('prompt-dialog');
   var form = document.getElementById('prompt-form');
   var importInput = document.getElementById('prompt-import');
+  var authStatus = document.getElementById('prompt-auth-status');
+  var authDetail = document.getElementById('prompt-auth-detail');
+  var signInButton = document.querySelector('[data-action="sign-in"]');
+  var signOutButton = document.querySelector('[data-action="sign-out"]');
+  var authDialog = document.getElementById('prompt-auth-dialog');
+  var authForm = document.getElementById('prompt-auth-form');
+  var authEmail = document.getElementById('prompt-auth-email');
+  var authMessage = document.getElementById('prompt-auth-message');
+  var authSubmit = authForm ? authForm.querySelector('[type="submit"]') : null;
+  var localState = readLocalPrompts();
   var state = {
-    prompts: loadPrompts(),
+    prompts: localState.prompts,
+    localPersisted: localState.persisted,
     query: '',
-    category: ''
+    category: '',
+    client: null,
+    user: null,
+    syncing: false
   };
 
-  function loadPrompts() {
+  function readLocalPrompts() {
     try {
       var saved = window.localStorage.getItem(STORAGE_KEY);
-      if (saved) {
+      if (saved !== null) {
         var parsed = JSON.parse(saved);
-        if (Array.isArray(parsed)) return parsed.map(normalizePrompt).filter(Boolean);
+        if (Array.isArray(parsed)) {
+          return { prompts: parsed.map(normalizePrompt).filter(Boolean), persisted: true };
+        }
       }
     } catch (error) {
       // Private browsing and disabled storage should not make the page unusable.
     }
-    return seedPrompts.map(normalizePrompt);
+    return { prompts: seedPrompts.map(normalizePrompt), persisted: false };
   }
 
   function savePrompts() {
+    state.localPersisted = true;
     try {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state.prompts));
     } catch (error) {
@@ -74,6 +91,7 @@
     var content = String(prompt.content || '').trim();
     if (!title || !content) return null;
     var tags = Array.isArray(prompt.tags) ? prompt.tags : String(prompt.tags || '').split(/[,，]/);
+    var updatedTime = Date.parse(prompt.updatedAt || '');
     return {
       id: String(prompt.id || createId()),
       title: title.slice(0, 80),
@@ -81,7 +99,7 @@
       tags: tags.map(function (tag) { return String(tag).trim(); }).filter(Boolean).filter(unique).slice(0, 12),
       description: String(prompt.description || '').trim().slice(0, 160),
       content: content,
-      updatedAt: prompt.updatedAt || new Date().toISOString()
+      updatedAt: Number.isNaN(updatedTime) ? new Date().toISOString() : new Date(updatedTime).toISOString()
     };
   }
 
@@ -154,6 +172,7 @@
   }
 
   function openForm(prompt) {
+    if (dialog.open) return;
     form.reset();
     document.getElementById('prompt-id').value = prompt ? prompt.id : '';
     document.getElementById('prompt-title').value = prompt ? prompt.title : '';
@@ -236,7 +255,7 @@
     document.body.appendChild(link);
     link.click();
     link.remove();
-    URL.revokeObjectURL(url);
+    window.setTimeout(function () { URL.revokeObjectURL(url); }, 0);
   }
 
   function importPrompts(file) {
@@ -258,6 +277,7 @@
         search.value = '';
         savePrompts();
         render();
+        syncAllToCloud();
       } catch (error) {
         window.alert('导入失败：请确认文件是有效的提示词 JSON。');
       }
@@ -266,12 +286,237 @@
     reader.readAsText(file);
   }
 
+  function setAuthStatus(title, detail, status) {
+    if (authStatus) authStatus.textContent = title;
+    if (authDetail) authDetail.textContent = detail;
+    var account = document.querySelector('.prompt-account');
+    if (account) account.dataset.status = status || '';
+  }
+
+  function updateSignedInStatus(detail, status) {
+    var email = state.user && state.user.email ? state.user.email : '当前账户';
+    setAuthStatus('已登录：' + email, detail || '提示词会在登录的浏览器之间同步。', status || 'online');
+    signInButton.hidden = true;
+    signOutButton.hidden = false;
+  }
+
+  function updateSignedOutStatus() {
+    setAuthStatus('未登录 · 仅当前浏览器', '登录后可在不同浏览器之间同步提示词。', 'offline');
+    signInButton.hidden = false;
+    signOutButton.hidden = true;
+  }
+
+  function openAuthDialog() {
+    if (!authDialog || !state.client || authDialog.open) return;
+    authForm.reset();
+    setAuthMessage('');
+    if (typeof authDialog.showModal === 'function') authDialog.showModal();
+    else authDialog.setAttribute('open', 'open');
+    window.setTimeout(function () { authEmail.focus(); }, 0);
+  }
+
+  function closeAuthDialog() {
+    if (!authDialog) return;
+    if (typeof authDialog.close === 'function' && authDialog.open) authDialog.close();
+    else authDialog.removeAttribute('open');
+  }
+
+  function setAuthMessage(message, isError) {
+    if (!authMessage) return;
+    authMessage.textContent = message;
+    authMessage.hidden = !message;
+    authMessage.dataset.error = isError ? 'true' : 'false';
+  }
+
+  async function requestMagicLink(email) {
+    var result = await state.client.auth.signInWithOtp({
+      email: email,
+      options: { emailRedirectTo: window.location.href.split('#')[0] }
+    });
+    if (result.error) throw result.error;
+  }
+
+  function getRemoteRows() {
+    return state.client.from('prompts')
+      .select('id,user_id,title,category,tags,description,content,updated_at')
+      .order('updated_at', { ascending: false })
+      .then(function (result) {
+        if (result.error) throw result.error;
+        return result.data || [];
+      });
+  }
+
+  function toRemoteRow(prompt) {
+    return {
+      id: prompt.id,
+      user_id: state.user.id,
+      title: prompt.title,
+      category: prompt.category,
+      tags: prompt.tags,
+      description: prompt.description,
+      content: prompt.content,
+      updated_at: prompt.updatedAt
+    };
+  }
+
+  function fromRemoteRow(row) {
+    return normalizePrompt({
+      id: row.id,
+      title: row.title,
+      category: row.category,
+      tags: row.tags,
+      description: row.description,
+      content: row.content,
+      updatedAt: row.updated_at
+    });
+  }
+
+  function upsertRemote(prompts) {
+    if (!prompts.length) return Promise.resolve();
+    return state.client.from('prompts').upsert(prompts.map(toRemoteRow), { onConflict: 'user_id,id' }).then(function (result) {
+      if (result.error) throw result.error;
+    });
+  }
+
+  function deleteRemote(id) {
+    return state.client.from('prompts').delete().eq('id', id).eq('user_id', state.user.id).then(function (result) {
+      if (result.error) throw result.error;
+    });
+  }
+
+  function mergePrompts(remotePrompts, localPrompts) {
+    var merged = Object.create(null);
+    remotePrompts.concat(localPrompts).forEach(function (prompt) {
+      var current = merged[prompt.id];
+      if (!current || dateValue(prompt.updatedAt) >= dateValue(current.updatedAt)) merged[prompt.id] = prompt;
+    });
+    return Object.keys(merged).map(function (id) { return merged[id]; }).sort(function (a, b) {
+      return dateValue(b.updatedAt) - dateValue(a.updatedAt);
+    });
+  }
+
+  function dateValue(value) {
+    var time = Date.parse(value || '');
+    return Number.isNaN(time) ? 0 : time;
+  }
+
+  async function syncCloud() {
+    if (!state.client || !state.user || state.syncing) return;
+    state.syncing = true;
+    updateSignedInStatus('正在从云端读取提示词……', 'syncing');
+    try {
+      var remotePrompts = (await getRemoteRows()).map(fromRemoteRow).filter(Boolean);
+      var localPrompts = state.localPersisted ? state.prompts : [];
+      if (!remotePrompts.length) {
+        if (state.prompts.length) {
+          var shouldUpload = !state.localPersisted || window.confirm('云端还没有提示词，是否上传当前浏览器中的 ' + state.prompts.length + ' 条？');
+          if (shouldUpload) await upsertRemote(state.prompts);
+          else state.prompts = [];
+        }
+      } else if (state.localPersisted) {
+        state.prompts = mergePrompts(remotePrompts, localPrompts);
+        await upsertRemote(state.prompts);
+      } else {
+        state.prompts = remotePrompts;
+      }
+      state.localPersisted = true;
+      savePrompts();
+      render();
+      updateSignedInStatus('已同步 · ' + state.prompts.length + ' 条提示词', 'online');
+    } catch (error) {
+      updateSignedInStatus('云端同步失败，当前继续使用本地数据', 'error');
+      if (window.console && console.error) console.error('Prompt sync failed:', error);
+    } finally {
+      state.syncing = false;
+    }
+  }
+
+  function syncOneToCloud(prompt) {
+    if (!state.client || !state.user) return;
+    updateSignedInStatus('正在保存到云端……', 'syncing');
+    upsertRemote([prompt]).then(function () {
+      updateSignedInStatus('已同步 · ' + state.prompts.length + ' 条提示词', 'online');
+    }).catch(function (error) {
+      updateSignedInStatus('云端保存失败，内容已保留在本地', 'error');
+      if (window.console && console.error) console.error('Prompt save failed:', error);
+    });
+  }
+
+  function syncDeleteToCloud(id) {
+    if (!state.client || !state.user) return;
+    updateSignedInStatus('正在从云端删除……', 'syncing');
+    deleteRemote(id).then(function () {
+      updateSignedInStatus('已同步 · ' + state.prompts.length + ' 条提示词', 'online');
+    }).catch(function (error) {
+      updateSignedInStatus('云端删除失败，内容仍保留在云端', 'error');
+      if (window.console && console.error) console.error('Prompt delete failed:', error);
+    });
+  }
+
+  async function syncAllToCloud() {
+    if (!state.client || !state.user) return;
+    updateSignedInStatus('正在更新云端列表……', 'syncing');
+    try {
+      var remotePrompts = (await getRemoteRows()).map(fromRemoteRow).filter(Boolean);
+      var localIds = state.prompts.map(function (prompt) { return prompt.id; });
+      var staleIds = remotePrompts.map(function (prompt) { return prompt.id; }).filter(function (id) {
+        return localIds.indexOf(id) === -1;
+      });
+      for (var index = 0; index < staleIds.length; index += 1) await deleteRemote(staleIds[index]);
+      await upsertRemote(state.prompts);
+      updateSignedInStatus('已同步 · ' + state.prompts.length + ' 条提示词', 'online');
+    } catch (error) {
+      updateSignedInStatus('云端更新失败，内容已保留在本地', 'error');
+      if (window.console && console.error) console.error('Prompt list sync failed:', error);
+    }
+  }
+
+  function initSupabase() {
+    var config = window.ESTELIEL_SUPABASE;
+    if (!config || !config.url || !config.publishableKey || !window.supabase || typeof window.supabase.createClient !== 'function') {
+      updateSignedOutStatus();
+      return;
+    }
+    try {
+      state.client = window.supabase.createClient(config.url, config.publishableKey, {
+        auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+      });
+    } catch (error) {
+      setAuthStatus('云端配置不可用', '当前继续使用本地数据。', 'error');
+      return;
+    }
+    state.client.auth.onAuthStateChange(function (event, session) {
+      state.user = session && session.user ? session.user : null;
+      if (state.user) {
+        updateSignedInStatus('正在准备同步……', 'syncing');
+        window.setTimeout(syncCloud, 0);
+      } else {
+        updateSignedOutStatus();
+      }
+    });
+    state.client.auth.getSession().then(function (result) {
+      if (result.error) throw result.error;
+      state.user = result.data.session ? result.data.session.user : null;
+      if (state.user) syncCloud();
+      else updateSignedOutStatus();
+    }).catch(function (error) {
+      updateSignedOutStatus();
+      if (window.console && console.error) console.error('Supabase session failed:', error);
+    });
+  }
+
   document.addEventListener('click', function (event) {
     var button = event.target.closest('[data-action]');
     if (!button) return;
     var action = button.getAttribute('data-action');
     if (action === 'new') return openForm();
     if (action === 'cancel') return closeForm();
+    if (action === 'sign-in') return openAuthDialog();
+    if (action === 'cancel-auth') return closeAuthDialog();
+    if (action === 'sign-out') {
+      if (state.client) state.client.auth.signOut();
+      return;
+    }
     if (action === 'export') return exportPrompts();
     if (action === 'import') return importInput.click();
     if (action === 'clear-filters') {
@@ -291,6 +536,7 @@
       state.prompts = state.prompts.filter(function (item) { return item.id !== prompt.id; });
       savePrompts();
       render();
+      syncDeleteToCloud(prompt.id);
     }
   });
 
@@ -317,14 +563,33 @@
     savePrompts();
     closeForm();
     render();
+    syncOneToCloud(prompt);
+  });
+
+  authForm.addEventListener('submit', function (event) {
+    event.preventDefault();
+    var email = authEmail.value.trim();
+    if (!email || !state.client) return;
+    authSubmit.disabled = true;
+    setAuthMessage('正在发送登录链接……', false);
+    requestMagicLink(email).then(function () {
+      setAuthMessage('登录链接已发送，请检查邮箱后回到此页面。', false);
+    }).catch(function (error) {
+      setAuthMessage('发送失败：' + (error.message || '请稍后重试。'), true);
+    }).finally(function () {
+      authSubmit.disabled = false;
+    });
   });
 
   importInput.addEventListener('change', function (event) { importPrompts(event.target.files[0]); });
   window.addEventListener('storage', function (event) {
-    if (event.key !== STORAGE_KEY) return;
-    state.prompts = loadPrompts();
+    if (event.key !== STORAGE_KEY || state.user) return;
+    var next = readLocalPrompts();
+    state.prompts = next.prompts;
+    state.localPersisted = next.persisted;
     render();
   });
 
   render();
+  initSupabase();
 })();

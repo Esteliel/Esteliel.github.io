@@ -28,3 +28,15 @@ title: 关于
 
 在 GitHub Pages 中选择从仓库分支根目录发布，由 GitHub 构建 Jekyll。
 本地已安装 Jekyll 时可运行 `jekyll serve` 预览；直接打开源 HTML 不会解析布局。
+
+## 提示词管理同步
+
+`/tools/prompts/` 默认支持本地缓存；登录后会通过 Supabase 在不同浏览器间同步。
+首次启用同步时，请按顺序完成：
+
+1. 在 Supabase Dashboard 的 SQL Editor 中执行 [`supabase/prompts.sql`](supabase/prompts.sql)。
+2. 在 Authentication > URL Configuration 的 Redirect URLs 中加入
+   `https://esteliel.github.io/tools/prompts/`。
+3. 确认 Authentication > Providers 中的 Email 登录已启用，然后在页面点击“登录同步”。
+
+前端只使用 publishable key；不要把 `service_role` 或其他 secret key 放入仓库。

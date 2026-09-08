@@ -2,6 +2,7 @@
 title: 提示词管理 · Esteliel
 stylesheet: /assets/css/prompts.css
 script: /assets/js/prompts.js
+supabase: true
 ---
 <div class="prompt-manager">
   <a class="back-link" href="{{ '/tools/' | relative_url }}">← 返回工具</a>
@@ -10,8 +11,20 @@ script: /assets/js/prompts.js
     <p class="eyebrow">01 / PROMPTS</p>
     <h1>提示词管理</h1>
     <p class="intro-copy">把灵感和工作流收进一个安静、好找的地方。</p>
-    <p class="prompt-storage-note">数据保存在当前浏览器，可用导出 JSON 备份或迁移。</p>
+    <p class="prompt-storage-note">未登录时保存在当前浏览器；登录后会同步到云端。</p>
   </header>
+
+  <section class="prompt-account" aria-label="云端同步账户">
+    <div class="prompt-account__copy">
+      <span class="prompt-account__eyebrow">CLOUD SYNC</span>
+      <strong id="prompt-auth-status">正在检查同步状态……</strong>
+      <span id="prompt-auth-detail">登录后可在不同浏览器之间同步提示词。</span>
+    </div>
+    <div class="prompt-account__actions">
+      <button class="button button--quiet" type="button" data-action="sign-in">登录同步</button>
+      <button class="button button--quiet" type="button" data-action="sign-out" hidden>退出登录</button>
+    </div>
+  </section>
 
   <section class="prompt-toolbar" aria-label="提示词筛选与操作">
     <div class="prompt-toolbar__field prompt-toolbar__field--search">
@@ -89,6 +102,28 @@ script: /assets/js/prompts.js
     <div class="prompt-form__footer">
       <button class="button button--quiet" type="button" data-action="cancel">取消</button>
       <button class="button button--primary" type="submit">保存提示词</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="prompt-auth-dialog" class="prompt-dialog prompt-auth-dialog" aria-labelledby="prompt-auth-title">
+  <form id="prompt-auth-form" class="prompt-form">
+    <div class="prompt-dialog__header">
+      <div>
+        <p class="eyebrow">CLOUD SYNC</p>
+        <h2 id="prompt-auth-title">登录以同步</h2>
+      </div>
+      <button class="dialog-close" type="button" data-action="cancel-auth" aria-label="关闭">×</button>
+    </div>
+    <p class="prompt-auth-dialog__intro">输入邮箱后，我们会发送一封登录链接。无需设置密码。</p>
+    <div class="prompt-form__field">
+      <label for="prompt-auth-email">邮箱</label>
+      <input id="prompt-auth-email" name="email" type="email" autocomplete="email" required placeholder="you@example.com">
+    </div>
+    <p id="prompt-auth-message" class="form-error" role="status" hidden></p>
+    <div class="prompt-form__footer">
+      <button class="button button--quiet" type="button" data-action="cancel-auth">取消</button>
+      <button class="button button--primary" type="submit">发送登录链接</button>
     </div>
   </form>
 </dialog>
