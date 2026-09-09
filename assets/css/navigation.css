@@ -1,0 +1,121 @@
+.nav-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 36px;
+}
+
+.site-card {
+  position: relative;
+  display: flex;
+  min-height: 188px;
+  box-sizing: border-box;
+  flex-direction: column;
+  padding: 24px;
+  overflow: hidden;
+  border: 1px solid #3e5364;
+  border-radius: 18px;
+  color: inherit;
+  background: rgb(32 49 64 / 78%);
+  text-decoration: none;
+  transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+}
+
+.site-card:hover,
+.site-card:focus-visible {
+  border-color: #8cc9ec;
+  background: rgb(38 61 79 / 92%);
+  transform: translateY(-3px);
+}
+
+.site-card:focus-visible {
+  outline: 2px solid #a4d8ff;
+  outline-offset: 4px;
+}
+
+.site-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-right: 34px;
+}
+
+.site-card__index {
+  color: #7faec9;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 0.875rem;
+}
+
+.site-card__category {
+  padding: 3px 9px;
+  border: 1px solid #547086;
+  border-radius: 999px;
+  color: #c6e5f7;
+  font-size: 0.72rem;
+  line-height: 1.4;
+}
+
+.site-card__name {
+  max-width: calc(100% - 32px);
+  margin-top: 22px;
+  color: #eef3f8;
+  font-size: 1.18rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.site-card__details {
+  display: grid;
+  gap: 8px;
+  max-height: 0;
+  margin-top: auto;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: max-height 160ms ease, opacity 160ms ease, transform 160ms ease;
+}
+
+.site-card:hover .site-card__details,
+.site-card:focus-visible .site-card__details {
+  max-height: 120px;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.site-card__description {
+  color: #b8c6d2;
+  font-size: 0.9rem;
+}
+
+.site-card__url {
+  overflow-wrap: anywhere;
+  color: #a4d8ff;
+  font-size: 0.76rem;
+}
+
+.site-card__arrow {
+  position: absolute;
+  top: 22px;
+  right: 24px;
+  color: #a4d8ff;
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .site-card__details {
+    max-height: 120px;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 680px) {
+  .nav-grid { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-card,
+  .site-card__details { transition: none; }
+}
