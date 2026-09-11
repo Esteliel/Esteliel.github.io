@@ -22,6 +22,11 @@ title: 关于
 会被 Jekyll 原样复制，因此应按上述格式创建页面才能应用全站样式。
 资源路径使用 `relative_url`，可通过 `baseurl` 适配子目录部署。
 
+三个站点使用相同的品牌标识与全站导航，公共样式位于 `assets/css/brand.css`，
+在页面专用样式之后加载。主站、博客和提示词仓库各保留一份相同文件；调整公共
+配色、字体或页头时同步这三份文件，各站部署时不依赖其他站点的样式资源。
+首页也保留全站页头，博客与提示词站的局部导航位于第二行。
+
 公共样式位于 `assets/css/site.css`；鱼的独立样式和脚本位于
 `assets/css/fish.css`、`assets/js/fish.js`。可在 `.fish-container` 中调整
 `--fish-color`、`height`、`opacity`。

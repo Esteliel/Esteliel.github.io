@@ -8,5 +8,6 @@ defaults:
     values:
       layout: default
 exclude:
+  - AGENTS.md
   - README.md
   - LICENSE

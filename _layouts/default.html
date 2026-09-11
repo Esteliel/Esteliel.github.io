@@ -7,13 +7,15 @@
   <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
   <link rel="stylesheet" href="{{ '/assets/css/fish.css' | relative_url }}">
   {% if page.stylesheet %}<link rel="stylesheet" href="{{ page.stylesheet | relative_url }}">{% endif %}
+  <link rel="stylesheet" href="{{ '/assets/css/brand.css' | relative_url }}">
   <script defer src="{{ '/assets/js/fish.js' | relative_url }}"></script>
   {% if page.script %}<script defer src="{{ page.script | relative_url }}"></script>{% endif %}
 </head>
 <body>
-  {% unless page.home %}
-  <header class="site-banner">
-    <nav class="site-nav" aria-label="主导航">
+  <header class="esteliel-header">
+    <div class="esteliel-header__inner">
+    <a class="esteliel-brand" href="{{ '/' | relative_url }}" aria-label="Esteliel 首页"><span class="esteliel-brand__mark" aria-hidden="true">e.</span><span>Esteliel</span><span class="esteliel-brand__section">HOME</span></a>
+    <nav class="esteliel-nav" aria-label="主导航">
       <a href="{{ '/nav/' | relative_url }}"{% if page.url == '/nav/' %} aria-current="page"{% endif %}>导航</a>
       <a href="{{ '/blog/' | relative_url }}" target="_blank" rel="noopener noreferrer" aria-label="博客（在新标签页打开）">博客</a>
       <a href="{{ '/tools/' | relative_url }}"{% if page.url contains '/tools/' %} aria-current="page"{% endif %}>工具</a>
@@ -21,8 +23,8 @@
       <a href="{{ '/gallery/' | relative_url }}"{% if page.url == '/gallery/' %} aria-current="page"{% endif %}>相册</a>
       <a href="{{ '/about/' | relative_url }}"{% if page.url == '/about/' %} aria-current="page"{% endif %}>关于</a>
     </nav>
+    </div>
   </header>
-  {% endunless %}
   <main class="site-content{% if page.home %} site-content--home{% endif %}">
     {{ content }}
   </main>
