@@ -1,4 +1,5 @@
 :root {
+  --site-banner-height: 72px;
   color-scheme: dark;
   font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
   line-height: 1.6;
@@ -18,7 +19,7 @@ body {
   box-sizing: border-box;
   width: min(100%, 960px);
   margin-inline: auto;
-  padding: 12vh 24px 220px;
+  padding: calc(var(--site-banner-height) + 7vh) 24px 220px;
 }
 
 a { color: #a4d8ff; }
@@ -66,9 +67,41 @@ a { color: #a4d8ff; }
   margin-top: 38px;
 }
 
-.home-nav a {
+.site-banner {
+  position: fixed;
+  z-index: 10;
+  top: 0;
+  right: 0;
+  left: 0;
+  min-height: var(--site-banner-height);
+  border-bottom: 1px solid rgb(123 157 177 / 20%);
+  background: rgb(24 37 50 / 92%);
+  backdrop-filter: blur(12px);
+}
+
+.site-nav {
+  display: flex;
+  box-sizing: border-box;
+  width: min(100%, 960px);
+  min-height: var(--site-banner-height);
+  margin-inline: auto;
+  padding-inline: 24px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px 24px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.site-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.home-nav a,
+.site-nav a {
   display: inline-flex;
   align-items: center;
+  flex: 0 0 auto;
   min-height: 44px;
   padding-inline: 4px;
   color: #c1ccd5;
@@ -79,12 +112,15 @@ a { color: #a4d8ff; }
   transition: color 160ms ease;
 }
 
-.home-nav a:hover {
+.home-nav a:hover,
+.site-nav a:hover,
+.site-nav a[aria-current="page"] {
   color: #fff;
   text-decoration: underline;
 }
 
 .home-nav a:focus-visible,
+.site-nav a:focus-visible,
 .back-link:focus-visible {
   outline: 2px solid #a4d8ff;
   outline-offset: 5px;
@@ -176,11 +212,15 @@ a { color: #a4d8ff; }
 }
 
 @media (max-width: 600px) {
-  .site-content:not(.site-content--home) { padding-top: 56px; }
-  .home-nav { column-gap: 18px; }
+  :root { --site-banner-height: 64px; }
+  .site-content:not(.site-content--home) { padding-top: calc(var(--site-banner-height) + 32px); }
+  .home-nav,
+  .site-nav { column-gap: 18px; }
+  .site-nav { justify-content: flex-start; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .home-nav a,
+  .site-nav a,
   .tool-card { transition: none; }
 }

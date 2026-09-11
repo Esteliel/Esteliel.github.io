@@ -1,0 +1,117 @@
+---
+title: 图片裁剪 · Esteliel
+stylesheet: /tools/crop/styles.css
+script: /tools/crop/app.js
+---
+<div class="crop-page">
+  <header class="crop-hero">
+    <div>
+      <p class="eyebrow">LOCAL IMAGE TOOL</p>
+      <h1>图片裁剪</h1>
+      <p class="intro-copy">在一张图片上选择任意数量的区域，分别导出为新图片。</p>
+    </div>
+    <div class="local-badge"><span aria-hidden="true"></span>仅在浏览器本地处理</div>
+  </header>
+
+  <section class="crop-workspace" aria-label="图片裁剪工作区">
+    <section class="crop-panel crop-preview-panel">
+      <div class="crop-panel__heading">
+        <div>
+          <p class="crop-section-index">01 / PREVIEW</p>
+          <h2>图片与选区</h2>
+        </div>
+        <button id="replaceBtn" class="crop-text-button is-hidden" type="button">更换图片</button>
+      </div>
+
+      <div id="dropzone" class="crop-dropzone">
+        <input id="fileInput" type="file" accept="image/jpeg,image/png,image/webp" hidden>
+        <div class="crop-upload-symbol" aria-hidden="true">＋</div>
+        <p class="crop-dropzone__title">拖放图片到这里</p>
+        <p class="crop-dropzone__copy">支持 JPG、PNG 和 WEBP，图片不会上传到服务器。</p>
+        <button id="chooseBtn" class="crop-button crop-button--primary" type="button">选择图片</button>
+      </div>
+
+      <div id="canvasStage" class="crop-canvas-stage is-hidden">
+        <canvas id="previewCanvas" tabindex="0" aria-label="图片裁剪区域预览" aria-describedby="canvasHelp"></canvas>
+        <p id="canvasHelp" class="crop-stage-caption">点击选区进行选择；拖动框体移动，拖动角点缩放。方向键可微调当前选区。</p>
+      </div>
+
+      <div id="imageMeta" class="crop-image-meta is-hidden">
+        <span class="crop-file-badge" aria-hidden="true">IMG</span>
+        <span class="crop-file-details"><strong id="fileName">—</strong><span id="fileDimensions">—</span></span>
+        <span id="imageType" class="crop-file-type">—</span>
+      </div>
+    </section>
+
+    <aside class="crop-panel crop-controls-panel">
+      <div class="crop-panel__heading">
+        <div>
+          <p class="crop-section-index">02 / REGIONS</p>
+          <h2>裁剪区域</h2>
+        </div>
+        <span id="regionCount" class="crop-count">0 个区域</span>
+      </div>
+
+      <div class="crop-control-block">
+        <div class="crop-control-label-row">
+          <span class="crop-control-title">便利设置</span>
+          <span class="crop-default-tag">默认</span>
+        </div>
+        <button id="splitPresetBtn" class="crop-preset" type="button" disabled>
+          <span><strong>左右对半</strong><small>创建覆盖左右半区的两个选区</small></span>
+          <span aria-hidden="true">02</span>
+        </button>
+        <p class="crop-control-hint">后续可以在这里继续添加其他常用裁剪设置。</p>
+      </div>
+
+      <div class="crop-divider"></div>
+
+      <div class="crop-control-block">
+        <div class="crop-control-label-row">
+          <span class="crop-control-title">区域列表</span>
+          <button id="addRegionBtn" class="crop-text-button" type="button" disabled>＋ 添加区域</button>
+        </div>
+        <div id="regionList" class="crop-region-list" aria-label="裁剪区域列表">
+          <p class="crop-empty-copy">上传图片后会默认创建左右两个选区。</p>
+        </div>
+      </div>
+
+      <fieldset id="regionEditor" class="crop-region-editor" disabled>
+        <legend>当前区域</legend>
+        <div class="crop-coordinate-grid">
+          <label>X <input id="regionX" type="number" min="0" step="1"></label>
+          <label>Y <input id="regionY" type="number" min="0" step="1"></label>
+          <label>宽 <input id="regionWidth" type="number" min="1" step="1"></label>
+          <label>高 <input id="regionHeight" type="number" min="1" step="1"></label>
+        </div>
+        <div class="crop-ratio-row" aria-label="设置当前区域比例">
+          <button type="button" data-ratio="free" aria-pressed="true">自由</button>
+          <button type="button" data-ratio="1">1:1</button>
+          <button type="button" data-ratio="0.5625">9:16</button>
+          <button type="button" data-ratio="1.7777777778">16:9</button>
+          <button type="button" data-ratio="1.3333333333">4:3</button>
+          <button type="button" data-ratio="0.75">3:4</button>
+        </div>
+        <button id="removeRegionBtn" class="crop-danger-button" type="button">删除当前区域</button>
+      </fieldset>
+
+      <div class="crop-actions">
+        <button id="resetBtn" class="crop-button crop-button--secondary" type="button" disabled>恢复默认对半</button>
+        <button id="generateBtn" class="crop-button crop-button--primary" type="button" disabled>生成裁剪结果</button>
+      </div>
+      <p id="message" class="crop-message" role="status">上传图片后开始设置。</p>
+    </aside>
+  </section>
+
+  <section id="resultsPanel" class="crop-panel crop-results-panel is-hidden" aria-live="polite">
+    <div class="crop-panel__heading crop-results-heading">
+      <div>
+        <p class="crop-section-index">03 / OUTPUT</p>
+        <h2>裁剪结果</h2>
+      </div>
+      <button id="downloadAllBtn" class="crop-button crop-button--secondary" type="button">保存全部</button>
+    </div>
+    <p id="resultsSummary" class="crop-results-summary"></p>
+    <div id="resultsGrid" class="crop-results-grid"></div>
+  </section>
+</div>
