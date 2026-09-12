@@ -5,229 +5,183 @@ stylesheet: /assets/css/navigation.css
 <div class="nav-page">
   <header class="nav-hero">
     <div>
-      <p class="eyebrow">CURATED LINKS</p>
-      <h1>外部导航</h1>
-      <p class="intro-copy">把常用的 AI、云服务和资源，收进一个轻巧的入口。</p>
+      <p class="eyebrow">CURATED WORKSPACE</p>
+      <h1>常用导航</h1>
+      <p class="intro-copy">把 AI 服务、模型资源与灵感工具按用途收好，需要时一步直达。</p>
     </div>
-    <div class="nav-hero__count" aria-label="16 个站点">
+    <div class="nav-hero__meta" aria-label="共 16 个站点，分为 4 类">
       <strong>16</strong>
-      <span>SITES</span>
+      <span>个站点 · 4 个分类</span>
     </div>
   </header>
 
-  <div class="nav-summary" aria-hidden="true">
-    <span>DAILY SHORTCUTS</span>
-    <span class="nav-summary__line"></span>
-    <span>OPEN IN NEW TAB ↗</span>
+  <div class="nav-layout">
+    <aside class="nav-sidebar">
+      <div class="nav-sidebar__heading">
+        <span>快速分类</span>
+        <span>04</span>
+      </div>
+      <nav class="nav-category-list" aria-label="站点分类">
+        <a href="#ai-services">
+          <span class="nav-category__icon" aria-hidden="true">✦</span>
+          <span>AI 服务与算力</span>
+          <span class="nav-category__count">4</span>
+        </a>
+        <a href="#model-resources">
+          <span class="nav-category__icon" aria-hidden="true">◇</span>
+          <span>模型与资源</span>
+          <span class="nav-category__count">4</span>
+        </a>
+        <a href="#tag-tools">
+          <span class="nav-category__icon" aria-hidden="true">⌗</span>
+          <span>标签工具</span>
+          <span class="nav-category__count">3</span>
+        </a>
+        <a href="#prompt-inspiration">
+          <span class="nav-category__icon" aria-hidden="true">✎</span>
+          <span>提示词灵感</span>
+          <span class="nav-category__count">5</span>
+        </a>
+      </nav>
+      <p class="nav-sidebar__hint">选择分类，快速定位到对应工具组。</p>
+    </aside>
+
+    <main class="nav-groups">
+      <section class="nav-section" id="ai-services">
+        <header class="nav-section__header">
+          <div>
+            <span class="nav-section__icon" aria-hidden="true">✦</span>
+            <h2>AI 服务与算力</h2>
+            <span class="nav-section__divider" aria-hidden="true"></span>
+            <p>对话、API 与云端算力</p>
+          </div>
+          <span class="nav-section__count">04</span>
+        </header>
+        <div class="nav-grid">
+          <a class="nav-card" style="--card-accent: #83e7c2" href="https://chat.deepseek.com/" target="_blank" rel="noopener noreferrer">
+            <span class="nav-card__icon" aria-hidden="true">DS</span>
+            <span class="nav-card__copy"><strong>DeepSeek</strong><span>DeepSeek 官方对话平台</span></span>
+            <span class="nav-card__arrow" aria-hidden="true">↗</span>
+          </a>
+          <a class="nav-card" style="--card-accent: #f3c874" href="https://platform.deepseek.com/sign_in" target="_blank" rel="noopener noreferrer">
+            <span class="nav-card__icon" aria-hidden="true">API</span>
+            <span class="nav-card__copy"><strong>DeepSeek 开放平台</strong><span>API 开放平台与开发者服务</span></span>
+            <span class="nav-card__arrow" aria-hidden="true">↗</span>
+          </a>
+          <a class="nav-card" style="--card-accent: #ffb78f" href="https://newapi.hancat.work/" target="_blank" rel="noopener noreferrer">
+            <span class="nav-card__icon" aria-hidden="true">CG</span>
+            <span class="nav-card__copy"><strong>Catgpt</strong><span>AI 模型 API 中转服务</span></span>
+            <span class="nav-card__arrow" aria-hidden="true">↗</span>
+          </a>
+          <a class="nav-card" style="--card-accent: #8ed8ff" href="https://www.autodl.com/" target="_blank" rel="noopener noreferrer">
+            <span class="nav-card__icon" aria-hidden="true">AD</span>
+            <span class="nav-card__copy"><strong>AutoDL</strong><span>AI 算力云</span></span>
+            <span class="nav-card__arrow" aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="nav-section" id="model-resources">
+        <header class="nav-section__header">
+          <div>
+            <span class="nav-section__icon" aria-hidden="true">◇</span>
+            <h2>模型与资源</h2>
+            <span class="nav-section__divider" aria-hidden="true"></span>
+            <p>模型、数据集与创作资料</p>
+          </div>
+          <span class="nav-section__count">04</span>
+        </header>
+        <div class="nav-grid">
+          <a class="nav-card" style="--card-accent: #c4a6ff" href="https://www.acgnai.top/" target="_blank" rel="noopener noreferrer">
+            <span class="nav-card__icon" aria-hidden="true">AH</span>
+            <span class="nav-card__copy"><strong>AI Hobbyist</strong><span>ACG 相关数据集与模型</span></span>
+            <span class="nav-card__arrow" aria-hidden="true">↗</span>
+          </a>
+          <a class="nav-card" style="--card-accent: #ef9bc8" href="https://codex-pet.org/zh/" target="_blank" rel="noopener noreferrer">
+            <span class="nav-card__icon" aria-hidden="true">CP</span>
+            <span class="nav-card__copy"><strong>Codex Pet Gallery</strong><span>自定义像素宠物库</span></span>
+            <span class="nav-card__arrow" aria-hidden="true">↗</span>
+          </a>
+          <a class="nav-card" style="--card-accent: #8bb7ff" href="https://tusi.cn/models/" target="_blank" rel="noopener noreferrer">
+            <span class="nav-card__icon" aria-hidden="true">TS</span>
+            <span class="nav-card__copy"><strong>吐司 tusi.cn</strong><span>模型资源与在线服务</span></span>
+            <span class="nav-card__arrow" aria-hidden="true">↗</span>
+          </a>
+          <a class="nav-card" style="--card-accent: #f1c889" href="https://my.feishu.cn/wiki/P7Qzwfnx4inVFLkVIPbclmY0nvb" target="_blank" rel="noopener noreferrer">
+            <span class="nav-card__icon" aria-hidden="true">CU</span>
+            <span class="nav-card__copy"><strong>ComfyUI 整合包</strong><span>ComfyUI 整合包与使用资料</span></span>
+            <span class="nav-card__arrow" aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="nav-section" id="tag-tools">
+        <header class="nav-section__header">
+          <div>
+            <span class="nav-section__icon" aria-hidden="true">⌗</span>
+            <h2>标签工具</h2>
+            <span class="nav-section__divider" aria-hidden="true"></span>
+            <p>Danbooru 标签查询与浏览</p>
+          </div>
+          <span class="nav-section__count">03</span>
+        </header>
+        <div class="nav-grid">
+          <a class="nav-card" style="--card-accent: #ff9f9f" href="https://www.modelscope.cn/studios/SAkizuki/DanbooruSearchOnline" target="_blank" rel="noopener noreferrer">
+            <span class="nav-card__icon" aria-hidden="true">MS</span>
+            <span class="nav-card__copy"><strong>二次元标签模糊搜索</strong><span>ModelScope 标签搜索工具</span></span>
+            <span class="nav-card__arrow" aria-hidden="true">↗</span>
+          </a>
+          <a class="nav-card" style="--card-accent: #a9d6ff" href="https://huggingface.co/spaces/SAkizuki/DanbooruSearch" target="_blank" rel="noopener noreferrer">
+            <span class="nav-card__icon" aria-hidden="true">HF</span>
+            <span class="nav-card__copy"><strong>DanbooruSearch</strong><span>Hugging Face 标签搜索空间</span></span>
+            <span class="nav-card__arrow" aria-hidden="true">↗</span>
+          </a>
+          <a class="nav-card" style="--card-accent: #d4adff" href="https://tags.novelai.dev/" target="_blank" rel="noopener noreferrer">
+            <span class="nav-card__icon" aria-hidden="true">DN</span>
+            <span class="nav-card__copy"><strong>Danbooru 标签超市</strong><span>Danbooru 标签浏览与检索</span></span>
+            <span class="nav-card__arrow" aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="nav-section" id="prompt-inspiration">
+        <header class="nav-section__header">
+          <div>
+            <span class="nav-section__icon" aria-hidden="true">✎</span>
+            <h2>提示词灵感</h2>
+            <span class="nav-section__divider" aria-hidden="true"></span>
+            <p>提示词发现、整理与分享</p>
+          </div>
+          <span class="nav-section__count">05</span>
+        </header>
+        <div class="nav-grid">
+          <a class="nav-card" style="--card-accent: #ffb38c" href="https://www.guunn.com/" target="_blank" rel="noopener noreferrer">
+            <span class="nav-card__icon" aria-hidden="true">GG</span>
+            <span class="nav-card__copy"><strong>咕咕 AI 指令库</strong><span>写作、绘画与视频提示词库</span></span>
+            <span class="nav-card__arrow" aria-hidden="true">↗</span>
+          </a>
+          <a class="nav-card" style="--card-accent: #8fe1bd" href="https://www.aiwind.org/" target="_blank" rel="noopener noreferrer">
+            <span class="nav-card__icon" aria-hidden="true">AW</span>
+            <span class="nav-card__copy"><strong>AiWind</strong><span>AI Prompt Library</span></span>
+            <span class="nav-card__arrow" aria-hidden="true">↗</span>
+          </a>
+          <a class="nav-card" style="--card-accent: #ffa4b9" href="https://prompthero.com/" target="_blank" rel="noopener noreferrer">
+            <span class="nav-card__icon" aria-hidden="true">PH</span>
+            <span class="nav-card__copy"><strong>PromptHero</strong><span>AI 图像与视频提示词搜索</span></span>
+            <span class="nav-card__arrow" aria-hidden="true">↗</span>
+          </a>
+          <a class="nav-card" style="--card-accent: #b9b0ff" href="https://prompts.chat/prompts" target="_blank" rel="noopener noreferrer">
+            <span class="nav-card__icon" aria-hidden="true">PC</span>
+            <span class="nav-card__copy"><strong>prompts.chat</strong><span>提示词浏览与分享社区</span></span>
+            <span class="nav-card__arrow" aria-hidden="true">↗</span>
+          </a>
+          <a class="nav-card" style="--card-accent: #f4d27e" href="https://lexica.art/" target="_blank" rel="noopener noreferrer">
+            <span class="nav-card__icon" aria-hidden="true">LX</span>
+            <span class="nav-card__copy"><strong>Lexica</strong><span>AI 图像与提示词搜索平台</span></span>
+            <span class="nav-card__arrow" aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </section>
+    </main>
   </div>
-
-  <section class="nav-grid" aria-label="外部站点">
-    <a class="nav-card" style="--card-accent: #8ed8ff" href="https://www.autodl.com/" target="_blank" rel="noopener noreferrer">
-      <span class="nav-card__top">
-        <span class="nav-card__icon" aria-hidden="true">AD</span>
-        <span class="nav-card__category">云</span>
-      </span>
-      <strong class="nav-card__name">AutoDL</strong>
-      <span class="nav-card__footer"><span>01</span><span aria-hidden="true">↗</span></span>
-      <span class="nav-card__details">
-        <span class="nav-card__description">AI 算力云</span>
-        <span class="nav-card__url">https://www.autodl.com/</span>
-      </span>
-    </a>
-
-    <a class="nav-card" style="--card-accent: #c4a6ff" href="https://www.acgnai.top/" target="_blank" rel="noopener noreferrer">
-      <span class="nav-card__top">
-        <span class="nav-card__icon" aria-hidden="true">AH</span>
-        <span class="nav-card__category">资源</span>
-      </span>
-      <strong class="nav-card__name">AI Hobbyist</strong>
-      <span class="nav-card__footer"><span>02</span><span aria-hidden="true">↗</span></span>
-      <span class="nav-card__details">
-        <span class="nav-card__description">ACG 相关数据集与模型</span>
-        <span class="nav-card__url">https://www.acgnai.top/</span>
-      </span>
-    </a>
-
-    <a class="nav-card" style="--card-accent: #ffb78f" href="https://newapi.hancat.work/" target="_blank" rel="noopener noreferrer">
-      <span class="nav-card__top">
-        <span class="nav-card__icon" aria-hidden="true">CG</span>
-        <span class="nav-card__category">中转站</span>
-      </span>
-      <strong class="nav-card__name">Catgpt</strong>
-      <span class="nav-card__footer"><span>03</span><span aria-hidden="true">↗</span></span>
-      <span class="nav-card__details">
-        <span class="nav-card__description">AI 模型 API 中转服务</span>
-        <span class="nav-card__url">https://newapi.hancat.work/</span>
-      </span>
-    </a>
-
-    <a class="nav-card" style="--card-accent: #83e7c2" href="https://chat.deepseek.com/" target="_blank" rel="noopener noreferrer">
-      <span class="nav-card__top">
-        <span class="nav-card__icon" aria-hidden="true">DS</span>
-        <span class="nav-card__category">AI</span>
-      </span>
-      <strong class="nav-card__name">DeepSeek</strong>
-      <span class="nav-card__footer"><span>04</span><span aria-hidden="true">↗</span></span>
-      <span class="nav-card__details">
-        <span class="nav-card__description">DeepSeek 官方对话平台</span>
-        <span class="nav-card__url">https://chat.deepseek.com/</span>
-      </span>
-    </a>
-
-    <a class="nav-card" style="--card-accent: #f3c874" href="https://platform.deepseek.com/sign_in" target="_blank" rel="noopener noreferrer">
-      <span class="nav-card__top">
-        <span class="nav-card__icon" aria-hidden="true">API</span>
-        <span class="nav-card__category">AI</span>
-      </span>
-      <strong class="nav-card__name">DeepSeek 开放平台</strong>
-      <span class="nav-card__footer"><span>05</span><span aria-hidden="true">↗</span></span>
-      <span class="nav-card__details">
-        <span class="nav-card__description">DeepSeek API 开放平台与开发者服务</span>
-        <span class="nav-card__url">https://platform.deepseek.com/sign_in</span>
-      </span>
-    </a>
-
-    <a class="nav-card" style="--card-accent: #ef9bc8" href="https://codex-pet.org/zh/" target="_blank" rel="noopener noreferrer">
-      <span class="nav-card__top">
-        <span class="nav-card__icon" aria-hidden="true">CP</span>
-        <span class="nav-card__category">资源</span>
-      </span>
-      <strong class="nav-card__name">Codex Pet Gallery</strong>
-      <span class="nav-card__footer"><span>06</span><span aria-hidden="true">↗</span></span>
-      <span class="nav-card__details">
-        <span class="nav-card__description">自定义像素宠物库</span>
-        <span class="nav-card__url">https://codex-pet.org/zh/</span>
-      </span>
-    </a>
-
-    <a class="nav-card" style="--card-accent: #8bb7ff" href="https://tusi.cn/models/" target="_blank" rel="noopener noreferrer">
-      <span class="nav-card__top">
-        <span class="nav-card__icon" aria-hidden="true">TS</span>
-        <span class="nav-card__category">模型</span>
-      </span>
-      <strong class="nav-card__name">吐司 tusi.cn</strong>
-      <span class="nav-card__footer"><span>07</span><span aria-hidden="true">↗</span></span>
-      <span class="nav-card__details">
-        <span class="nav-card__description">模型资源与在线服务</span>
-        <span class="nav-card__url">https://tusi.cn/models/</span>
-      </span>
-    </a>
-
-    <a class="nav-card" style="--card-accent: #ff9f9f" href="https://www.modelscope.cn/studios/SAkizuki/DanbooruSearchOnline" target="_blank" rel="noopener noreferrer">
-      <span class="nav-card__top">
-        <span class="nav-card__icon" aria-hidden="true">MS</span>
-        <span class="nav-card__category">标签</span>
-      </span>
-      <strong class="nav-card__name">二次元标签模糊搜索</strong>
-      <span class="nav-card__footer"><span>08</span><span aria-hidden="true">↗</span></span>
-      <span class="nav-card__details">
-        <span class="nav-card__description">ModelScope 创空间中的 Danbooru 标签搜索工具</span>
-        <span class="nav-card__url">https://www.modelscope.cn/studios/SAkizuki/DanbooruSearchOnline</span>
-      </span>
-    </a>
-
-    <a class="nav-card" style="--card-accent: #a9d6ff" href="https://huggingface.co/spaces/SAkizuki/DanbooruSearch" target="_blank" rel="noopener noreferrer">
-      <span class="nav-card__top">
-        <span class="nav-card__icon" aria-hidden="true">HF</span>
-        <span class="nav-card__category">标签</span>
-      </span>
-      <strong class="nav-card__name">DanbooruSearch</strong>
-      <span class="nav-card__footer"><span>09</span><span aria-hidden="true">↗</span></span>
-      <span class="nav-card__details">
-        <span class="nav-card__description">Hugging Face 上的 Danbooru 标签搜索空间</span>
-        <span class="nav-card__url">https://huggingface.co/spaces/SAkizuki/DanbooruSearch</span>
-      </span>
-    </a>
-
-    <a class="nav-card" style="--card-accent: #d4adff" href="https://tags.novelai.dev/" target="_blank" rel="noopener noreferrer">
-      <span class="nav-card__top">
-        <span class="nav-card__icon" aria-hidden="true">DN</span>
-        <span class="nav-card__category">标签</span>
-      </span>
-      <strong class="nav-card__name">Danbooru 标签超市</strong>
-      <span class="nav-card__footer"><span>10</span><span aria-hidden="true">↗</span></span>
-      <span class="nav-card__details">
-        <span class="nav-card__description">Danbooru 标签浏览与检索工具</span>
-        <span class="nav-card__url">https://tags.novelai.dev/</span>
-      </span>
-    </a>
-
-    <a class="nav-card" style="--card-accent: #f1c889" href="https://my.feishu.cn/wiki/P7Qzwfnx4inVFLkVIPbclmY0nvb" target="_blank" rel="noopener noreferrer">
-      <span class="nav-card__top">
-        <span class="nav-card__icon" aria-hidden="true">CU</span>
-        <span class="nav-card__category">资源</span>
-      </span>
-      <strong class="nav-card__name">ComfyUI 整合包</strong>
-      <span class="nav-card__footer"><span>11</span><span aria-hidden="true">↗</span></span>
-      <span class="nav-card__details">
-        <span class="nav-card__description">ComfyUI 整合包与使用资料</span>
-        <span class="nav-card__url">https://my.feishu.cn/wiki/P7Qzwfnx4inVFLkVIPbclmY0nvb</span>
-      </span>
-    </a>
-
-    <a class="nav-card" style="--card-accent: #ffb38c" href="https://www.guunn.com/" target="_blank" rel="noopener noreferrer">
-      <span class="nav-card__top">
-        <span class="nav-card__icon" aria-hidden="true">GG</span>
-        <span class="nav-card__category">提示词</span>
-      </span>
-      <strong class="nav-card__name">咕咕 AI 指令库</strong>
-      <span class="nav-card__footer"><span>12</span><span aria-hidden="true">↗</span></span>
-      <span class="nav-card__details">
-        <span class="nav-card__description">AI 写作、绘画与视频提示词库</span>
-        <span class="nav-card__url">https://www.guunn.com/</span>
-      </span>
-    </a>
-
-    <a class="nav-card" style="--card-accent: #8fe1bd" href="https://www.aiwind.org/" target="_blank" rel="noopener noreferrer">
-      <span class="nav-card__top">
-        <span class="nav-card__icon" aria-hidden="true">AW</span>
-        <span class="nav-card__category">提示词</span>
-      </span>
-      <strong class="nav-card__name">AiWind</strong>
-      <span class="nav-card__footer"><span>13</span><span aria-hidden="true">↗</span></span>
-      <span class="nav-card__details">
-        <span class="nav-card__description">AI Prompt Library</span>
-        <span class="nav-card__url">https://www.aiwind.org/</span>
-      </span>
-    </a>
-
-    <a class="nav-card" style="--card-accent: #ffa4b9" href="https://prompthero.com/" target="_blank" rel="noopener noreferrer">
-      <span class="nav-card__top">
-        <span class="nav-card__icon" aria-hidden="true">PH</span>
-        <span class="nav-card__category">提示词</span>
-      </span>
-      <strong class="nav-card__name">PromptHero</strong>
-      <span class="nav-card__footer"><span>14</span><span aria-hidden="true">↗</span></span>
-      <span class="nav-card__details">
-        <span class="nav-card__description">AI 图像与视频提示词搜索</span>
-        <span class="nav-card__url">https://prompthero.com/</span>
-      </span>
-    </a>
-
-    <a class="nav-card" style="--card-accent: #b9b0ff" href="https://prompts.chat/prompts" target="_blank" rel="noopener noreferrer">
-      <span class="nav-card__top">
-        <span class="nav-card__icon" aria-hidden="true">PC</span>
-        <span class="nav-card__category">提示词</span>
-      </span>
-      <strong class="nav-card__name">prompts.chat</strong>
-      <span class="nav-card__footer"><span>15</span><span aria-hidden="true">↗</span></span>
-      <span class="nav-card__details">
-        <span class="nav-card__description">AI 提示词浏览与分享社区</span>
-        <span class="nav-card__url">https://prompts.chat/prompts</span>
-      </span>
-    </a>
-
-    <a class="nav-card" style="--card-accent: #f4d27e" href="https://lexica.art/" target="_blank" rel="noopener noreferrer">
-      <span class="nav-card__top">
-        <span class="nav-card__icon" aria-hidden="true">LX</span>
-        <span class="nav-card__category">提示词</span>
-      </span>
-      <strong class="nav-card__name">Lexica</strong>
-      <span class="nav-card__footer"><span>16</span><span aria-hidden="true">↗</span></span>
-      <span class="nav-card__details">
-        <span class="nav-card__description">AI 图像与提示词搜索平台</span>
-        <span class="nav-card__url">https://lexica.art/</span>
-      </span>
-    </a>
-  </section>
 </div>
